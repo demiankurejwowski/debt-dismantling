@@ -1,0 +1,15 @@
+•	Pitch/Idea: Create a web application that allows users to create an account to store numerical data representing real life bills and debt. 
+This information would then be processed to display easy to read information related to what path to debt relief will be the best to the user. It will display both avalanche and snowball debt relief groundwork and what that would mean to them in numbers. Thusly allowing the user to decide what form of debt relief would be the best path for themselves to follow for getting rid of debt. 
+
+•	MVP:
+o	Users can create an account
+o	Users can store, update, and delete debt information
+o	Users can see different debt relief directions
+o	Users can leave notes for better planning
+o	Data will display in graphs and informative ways
+
+•	Future Features:
+o	Users will be able to select if they want basic information shared publicly
+o	Public information will be used to make averages and show customers where they are in comparison to those in their area or country
+
+
