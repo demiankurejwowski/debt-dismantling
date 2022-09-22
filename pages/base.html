@@ -4,11 +4,23 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script type="text/javascript" src="/jquery/jquery-3.6.0.min.js"></script>
+    <title>Base</title>
 </head>
 <body>
-    <nav class="add_later">
-        
-    </nav>
+
+    <ul class="nav">
+        <li class="nav-link"><a href="{{url_for('home')}}">Home</a></li>
+        {% if current_user.is_authenticated %}
+        <li class="nav-link"><a href="{{url_for('logout')}}">Logout</a></li>
+        {% else %}
+        <li class="nav-link"><a href="{{url_for('login')}}">Log In</a></li>
+        <li class="nav-link"><a href="{{url_for('register')}}">Register</a></li>
+        {% endif %}
+    </ul>
+    {% block content %}
+
+    {% endblock %}
 </body>
 </html>
