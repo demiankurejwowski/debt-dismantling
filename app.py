@@ -15,9 +15,7 @@ from forms import AddForm, DelForm, UpdateForm, LoginForm, RegistrationForm
 
 app = Flask(__name__, template_folder='pages')
 
-app.secret_key = environ["secret_key_ftw"]
-
-# basedir = os.path.abspath(os.path.dirname(__file__))
+app.secret_key = environ["SECRET_KEY_FTW"]
 
 migrate = Migrate(app,db)
 
@@ -89,8 +87,10 @@ def register():
     return render_template('register.html', form=form)
 
 
+
 if __name__ == '__main__':
     database_connection(app)
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=8000)
+    print("Connected to DB.")
 
 

@@ -14,11 +14,14 @@ class Users(db.Model,UserMixin):
 
     __tablename__ = 'users'
 
-    user_id         = db.Column(db.Integer, primary_key=True)
+    id              = db.Column(db.Integer, primary_key=True)
     username        = db.Column(db.String(64), unique=True, nullable=False)
     email           = db.Column(db.String(64), unique=True, index=True, nullable=False)
     password_hash   = db.Column(db.String(255), nullable=False)
     state           = db.Column(db.String(2), nullable=True)
+    loans           = db.relationship('Loans', backref='users', lazy=True)
+    other_debts     = db.relationship('OtherDebts', backref='users', lazy=True)
+    credit_cards    = db.relationship('CreditCards', backref='users', lazy=True)
 
     def __init__(self, username="", email="", password="", state=""):
         self.username       = username
@@ -39,7 +42,7 @@ class Loans(db.Model):
     __tablename__ = 'loans'
 
     debt_id         = db.Column(db.Integer, primary_key=True)
-    user_id         = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    user_id         = db.Column(db.Integer, db.ForeignKey('users.id'))
     loan_name       = db.Column(db.String(64), nullable=False, unique=True)
     current_owed    = db.Column(db.Float, nullable=False)
     interest_rate   = db.Column(db.Float, nullable=False)
@@ -65,7 +68,7 @@ class OtherDebts(db.Model):
     __tablename__ = 'other_debts'
 
     other_id        = db.Column(db.Integer, primary_key=True)
-    user_id         = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    user_id         = db.Column(db.Integer, db.ForeignKey('users.id'))
     debt_name       = db.Column(db.String(64), nullable=False)
     current_owed    = db.Column(db.Float, nullable=False)
     interest_rate   = db.Column(db.Float, nullable=False)
@@ -91,7 +94,7 @@ class CreditCards(db.Model):
     __tablename__ = 'credit_cards'
 
     cc_id           = db.Column(db.Integer, primary_key=True)
-    user_id         = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    user_id         = db.Column(db.Integer, db.ForeignKey('users.id'))
     card_name       = db.Column(db.String(64), nullable=False)
     card_max        = db.Column(db.Integer, nullable=False)
     current_owed    = db.Column(db.Float, nullable=False)
@@ -113,14 +116,15 @@ class CreditCards(db.Model):
         return f'Something to return'
 
 def database_connection(app):
-    app.config['SQLALCHEMY_DATABASE_URI'] = environ['POSTGRES_URI']
+    app.config['SQLALCHEMY_DATABASE_URI'] = environ['DATABASE_URI']
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
     db.app = app
     db.init_app(app)
+    
 
 if __name__ == "__main__":
-    from debt_dis import app
+    from app import app
     database_connection(app)
-    print("Connected")
+    print("Connected to DB.")
 
