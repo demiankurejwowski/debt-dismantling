@@ -1,4 +1,5 @@
 
+from tokenize import String
 from wsgiref.validate import validator
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, IntegerField
@@ -29,9 +30,22 @@ class RegistrationForm(FlaskForm):
         if Users.query.filter_by(username=field.data).first():
             raise ValidationError('Your username has already been registered')
 
-class AddForm(FlaskForm):
-    name    = StringField('Name of debt: ')
+class LoanForm(FlaskForm):
+    loan_name       = StringField('loan_name',validators=[DataRequired()])
+    current_owed    = StringField('currant_owed', validators=[DataRequired()])
+    interest_rate   = StringField('interest_rate',validators=[DataRequired()])
+    min_payment     = StringField('min_payment',validators=[DataRequired()])
+    due_date        = StringField('due_date',validators=[DataRequired()])
+    payoff_date     = StringField('payoff_date',validators=[DataRequired()])
+    submit          = SubmitField('Track debt')
+
+class OtherForm(FlaskForm):
+    name    = StringField('Name of other debt: ')
     submit  = SubmitField('Track debt')
+
+class CCForm(FlaskForm):
+    name    = StringField('Name of CC: ')
+    submit  = SubmitField('Track of CC')
 
 class DelForm(FlaskForm):
     id      = IntegerField('ID number of debt to remove: ')

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="jumbotron">
+        <p>Let's look over your current information</p>
+    </div>
+    <!-- put something here to show the information entered -->
+    <div>
+        <form method="post" id="newLoan">
+            {{form.hidden_tag()}}           <br>
+            {{form.loan_name.label}}        <br>{{form.loan_name}} <br>
+            {{form.current_owed.label}}     <br>{{form.current_owed}} <br>
+            {{form.interest_rate.label}}    <br>{{form.interest_rate}} <br>
+            {{form.min_payment.label}}      <br>{{form.min_payment}} <br>
+            {{form.due_date.label}}         <br>{{form.due_date}} <br>
+            {{form.payoff_date.label}}      <br>{{Form.payoff_date}} <br><br>
+            {{form.submit()}}
+        </form>
+    </div>
+{% endblock %}

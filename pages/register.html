@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
     <form method="post">
-        {{form.hidden_tag()}}           <br>
-        {{form.email.label}}            <br>{{form.email}}<br>
-        {{form.username.label}}         <br>{{form.username()}} <br>
-        {{form.password.label}}         <br>{{form.password()}} <br>
-        {{form.password_confirm.label}} <br>{{form.password_confirm()}} <br>
-        {{form.state.label}}            <br>{{form.state()}} <br><br>
-        {{form.submit()}}
+        {{loan_form.hidden_tag()}}           <br>
+        {{loan_form.email.label}}            <br>{{loan_form.email}}<br>
+        {{loan_form.username.label}}         <br>{{loan_form.username()}} <br>
+        {{loan_form.password.label}}         <br>{{loan_form.password()}} <br>
+        {{loan_form.password_confirm.label}} <br>{{loan_form.password_confirm()}} <br>
+        {{loan_form.state.label}}            <br>{{loan_form.state()}} <br><br>
+        {{loan_form.submit()}}
     </form>
 {% endblock %}

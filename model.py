@@ -126,5 +126,4 @@ def database_connection(app):
 if __name__ == "__main__":
     from app import app
     database_connection(app)
-    print("Connected to DB.")
 
