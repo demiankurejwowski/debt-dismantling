@@ -1,16 +1,14 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="jumbotron">
+    <div class="jumbotron d-flex justify-content-center">
         <p>Where would you like to go next?</p>
     </div>
     <!-- choose next page to go to -->
     <div class="container">
         <div class="row justify-content-md-center">
-            <ul>
-                <a href="{{url_for('home')}}">Home</a>
-                <a href="{{url_for('overview')}}">Overview</a>
-                <a href="{{url_for('addnew')}}">Add Another</a>
-            </ul>
+            <div class="col-md d-flex justify-content-center"><a href="{{url_for('home')}}">Home</a></div>
+            <div class="col-md d-flex justify-content-center"><a href="{{url_for('overview')}}">Overview</a></div>
+            <div class="col-md d-flex justify-content-center"><a href="{{url_for('addnew')}}">Add Another</a></div>
         </div>
     </div>
 {% endblock %}

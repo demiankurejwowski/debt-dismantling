@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="jumbotron">
+    <div class="jumbotron d-flex justify-content-center">
         <p>Enter in your debts below</p>
     </div>
     
     <div class="container">
         <div class="row">
 
-            <div class="col-sm">
+            <div class="col-sm d-flex justify-content-center">
                 <form method="post" id="newLoan">
                     {{loan_form.hidden_tag()}}           <br>
                     {{loan_form.loan_name.label}}        <br>{{loan_form.loan_name}}       <br>
@@ -19,7 +19,7 @@
                     {{loan_form.submit()}}
                 </form>
             </div>
-            <div class="col-sm">
+            <div class="col-sm d-flex justify-content-center">
                 <form method="post" id="otherDebt">
                     {{other_form.hidden_tag()}}         <br>
                     {{other_form.debt_name.label}}      <br>{{other_form.debt_name}}       <br>
@@ -31,7 +31,7 @@
                     {{other_form.submit()}}
                 </form>
             </div>
-            <div class="col-sm">
+            <div class="col-sm d-flex justify-content-center">
                 
                 <form method="post" id="newCC">
                     {{cc_form.hidden_tag()}}        <br>
@@ -39,11 +39,12 @@
                     {{cc_form.card_max.label}}      <br>{{cc_form.card_max}}        <br>
                     {{cc_form.current_owed.label}}  <br>{{cc_form.current_owed}}    <br>
                     {{cc_form.interest_rate.label}} <br>{{cc_form.interest_rate}}   <br>
-                    {{cc_form.due_date.label}}      <br>{{cc_form.due_date}}        <br>
-                    {{cc_form.min_calc.label}}      <br>{{cc_form.min_calc}}        <br><br>
+                    {{cc_form.min_calc.label}}      <br>{{cc_form.min_calc}}        <br>
+                    {{cc_form.due_date.label}}      <br>{{cc_form.due_date}}        <br><br>
                     {{cc_form.submit()}}
                 </form>
             </div>
         </div>
     </div>
+    <br><br><br>
 {% endblock %}

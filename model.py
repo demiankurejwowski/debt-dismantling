@@ -47,8 +47,8 @@ class Loans(db.Model):
     current_owed    = db.Column(db.Float, nullable=False)
     interest_rate   = db.Column(db.Float, nullable=False)
     min_payment     = db.Column(db.Float, nullable=False)
-    due_date        = db.Column(db.DateTime, nullable=False)
-    payoff_date     = db.Column(db.DateTime, nullable=False)
+    due_date        = db.Column(db.Date, nullable=False)
+    payoff_date     = db.Column(db.Date, nullable=False)
     active          = db.Column(db.Boolean, nullable=False)
 
     def __init__(self, loan_name="", current_owed = "", interest_rate="", min_payment="", due_date="", payoff_date="", active=True):
@@ -73,9 +73,8 @@ class OtherDebts(db.Model):
     current_owed    = db.Column(db.Float, nullable=False)
     interest_rate   = db.Column(db.Float, nullable=False)
     min_payment     = db.Column(db.Float, nullable=True)
-    due_date        = db.Column(db.DateTime, nullable=False)
-    #todo: payoff date needs to be changed to be nullable later
-    payoff_date     = db.Column(db.DateTime, nullable=False)
+    due_date        = db.Column(db.Date, nullable=False)
+    payoff_date     = db.Column(db.Date, nullable=True)
     active          = db.Column(db.Boolean, nullable=False)
 
     def __init__(self, debt_name="", current_owed="", interest_rate="", min_payment="", due_date="", payoff_date="", active=True):
@@ -100,11 +99,11 @@ class CreditCards(db.Model):
     card_max        = db.Column(db.Integer, nullable=False)
     current_owed    = db.Column(db.Float, nullable=False)
     interest_rate   = db.Column(db.Float, nullable=False)
-    due_date        = db.Column(db.DateTime, nullable=False)
     min_calc        = db.Column(db.Float, nullable=True)
+    due_date        = db.Column(db.Date, nullable=False)
     active          = db.Column(db.Boolean, nullable=False)
 
-    def __init__(self, card_name="", card_max="", current_owed="", interest_rate="", due_date="", min_calc="", active=True):
+    def __init__(self, card_name="", card_max="", current_owed="", interest_rate="", due_date="", min_calc=0.04, active=True):
         self.card_name      = card_name
         self.card_max       = card_max
         self.current_owed   = current_owed

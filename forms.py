@@ -1,10 +1,11 @@
 
 from tokenize import String
 from wsgiref.validate import validator
+from xmlrpc.client import DateTime
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, IntegerField
+from wtforms import StringField, PasswordField, SubmitField, IntegerField, ValidationError
 from wtforms.validators import DataRequired, Email, EqualTo, email_validator, Length
-from wtforms import ValidationError
+from wtforms.fields import DateField
 import email_validator
 
 from model import Users
@@ -35,17 +36,17 @@ class LoanForm(FlaskForm):
     current_owed    = StringField('Current Amount Owed', validators=[DataRequired()])
     interest_rate   = StringField('Interest Rate',validators=[DataRequired()])
     min_payment     = StringField('Minimum Payment Amount',validators=[DataRequired()])
-    due_date        = StringField('Due Date',validators=[DataRequired()])
-    payoff_date     = StringField('Payoff Date',validators=[DataRequired()])
+    due_date        = DateField('Due Date', format='%m%d%Y',validators=[DataRequired()])
+    payoff_date     = DateField('Payoff Date', format='%m%d%Y',validators=[DataRequired()])
     submit          = SubmitField('Track Loan')
 
 class OtherForm(FlaskForm):
     debt_name       = StringField('Debt Name', validators=[DataRequired()])
-    current_owed    = StringField('Current Owed Amount', validators=[DataRequired()])
+    current_owed    = StringField('Current Amount Owed', validators=[DataRequired()])
     interest_rate   = StringField('Interest Rate', validators=[DataRequired()])
     min_payment     = StringField('Minimum Payment Amount')
-    due_date        = StringField('Due Date', validators=[DataRequired()])
-    payoff_date     = StringField('Payoff Date (if applicable)', validators=[DataRequired()])
+    due_date        = DateField('Due Date', format='%m%d%Y', validators=[DataRequired()])
+    payoff_date     = DateField('Payoff Date (if applicable)', format='%m%d%Y', validators=[DataRequired()])
     submit          = SubmitField('Track Debt')
 
 class CCForm(FlaskForm):
@@ -53,8 +54,8 @@ class CCForm(FlaskForm):
     card_max        = StringField('Card Max Amount', validators=[DataRequired()])
     current_owed    = StringField('Current Owed Amount', validators=[DataRequired()])
     interest_rate   = StringField('Card Interest Rate', validators=[DataRequired()])
-    due_date        = StringField('Due Date', validators=[DataRequired()])
     min_calc        = StringField('Minimum Calculation Amount')
+    due_date        = DateField('Due Date', format='%m%d%Y', validators=[DataRequired()])
     submit          = SubmitField('Track CreditCard')
 
 class DelForm(FlaskForm):

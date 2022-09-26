@@ -89,6 +89,7 @@ def register():
     return render_template('register.html', form=form)
 
 @app.route('/overview', methods=['GET','POST'])
+@login_required
 def overview():
     loan_form   = LoanForm()
 
@@ -109,7 +110,8 @@ def overview():
 
     return render_template('overview.html', loan_form=loan_form)
 
-@app.route('/addnew', methods=['POST'])
+@app.route('/addnew', methods=['GET','POST'])
+@login_required
 def addnew():
     loan_form   = LoanForm()
     other_form  = OtherForm()
@@ -161,6 +163,7 @@ def addnew():
     return render_template('addnew.html', loan_form=loan_form, other_form=other_form, cc_form=cc_form)
 
 @app.route('/debtadded')
+@login_required
 def debtadded():
     return render_template('debtadded.html')
 
