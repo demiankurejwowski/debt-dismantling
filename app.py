@@ -1,5 +1,6 @@
 #server py file
 
+from crypt import methods
 from os import environ
 from flask import Flask, render_template, render_template, url_for, redirect, request, flash, abort
 
@@ -89,20 +90,61 @@ def register():
 
 @app.route('/overview', methods=['GET','POST'])
 def overview():
-    loan_form = LoanForm()
+    loan_form   = LoanForm()
+    other_form  = OtherForm()
+    cc_form     = CCForm()
 
     if loan_form.validate_on_submit():
-        loan = Loans(loan_name      =loan_form.loan_name.data,
-                    current_owed    =loan_form.current_owed.data,
-                    interest_rate   =loan_form.interest_rate.data,
-                    min_payment     =loan_form.min_payment.data,
-                    due_date        =loan_form.due_date.data,
-                    payoff_date     =loan_form.payoff_date.data)
+        loan = Loans(loan_name      = loan_form.loan_name.data,
+                    current_owed    = loan_form.current_owed.data,
+                    interest_rate   = loan_form.interest_rate.data,
+                    min_payment     = loan_form.min_payment.data,
+                    due_date        = loan_form.due_date.data,
+                    payoff_date     = loan_form.payoff_date.data)
 
         db.session.add(loan)
         db.session.commit()
         flash("Loan has been added to your list.")
         return redirect(url_for('overview'))
+
+
+    if other_form.validate_on_submit():
+        pass
+
+
+    if cc_form.validate_on_submit():
+        pass
+    
+
+    return render_template('overview.html', loan_form=loan_form)
+
+@app.route('/addnew', methods=['GET', 'POST'])
+def addnew():
+    loan_form   = LoanForm()
+    other_form  = OtherForm()
+    cc_form     = CCForm()
+
+    if loan_form.validate_on_submit():
+        loan = Loans(loan_name      = loan_form.loan_name.data,
+                    current_owed    = loan_form.current_owed.data,
+                    interest_rate   = loan_form.interest_rate.data,
+                    min_payment     = loan_form.min_payment.data,
+                    due_date        = loan_form.due_date.data,
+                    payoff_date     = loan_form.payoff_date.data)
+
+        db.session.add(loan)
+        db.session.commit()
+        flash("Loan has been added to your list.")
+        return redirect(url_for('overview'))
+
+
+    if other_form.validate_on_submit():
+        other = OtherForm()
+
+
+    if cc_form.validate_on_submit():
+        pass
+    
 
     return render_template('overview.html', loan_form=loan_form)
 

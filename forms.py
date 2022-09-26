@@ -31,21 +31,31 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('Your username has already been registered')
 
 class LoanForm(FlaskForm):
-    loan_name       = StringField('loan_name',validators=[DataRequired()])
-    current_owed    = StringField('currant_owed', validators=[DataRequired()])
-    interest_rate   = StringField('interest_rate',validators=[DataRequired()])
-    min_payment     = StringField('min_payment',validators=[DataRequired()])
-    due_date        = StringField('due_date',validators=[DataRequired()])
-    payoff_date     = StringField('payoff_date',validators=[DataRequired()])
-    submit          = SubmitField('Track debt')
+    loan_name       = StringField('Loan Name',validators=[DataRequired()])
+    current_owed    = StringField('Current Amount Owed', validators=[DataRequired()])
+    interest_rate   = StringField('Interest Rate',validators=[DataRequired()])
+    min_payment     = StringField('Minimum Payment Amount',validators=[DataRequired()])
+    due_date        = StringField('Due Date',validators=[DataRequired()])
+    payoff_date     = StringField('Payoff Date',validators=[DataRequired()])
+    submit          = SubmitField('Track Loan')
 
 class OtherForm(FlaskForm):
-    name    = StringField('Name of other debt: ')
-    submit  = SubmitField('Track debt')
+    debt_name       = StringField('Debt Name', validators=[DataRequired()])
+    current_owed    = StringField('Current Owed Amount', validators=[DataRequired()])
+    interest_rate   = StringField('Interest Rate', validators=[DataRequired()])
+    min_payment     = StringField('Minimum Payment Amount')
+    due_date        = StringField('Due Date', validators=[DataRequired()])
+    payoff_date     = StringField('Payoff Date (if applicable)', validators=[DataRequired()])
+    submit          = SubmitField('Track Debt')
 
 class CCForm(FlaskForm):
-    name    = StringField('Name of CC: ')
-    submit  = SubmitField('Track of CC')
+    card_name       = StringField('CreditCard Name', validators=[DataRequired()])
+    card_max        = StringField('Card Max Amount', validators=[DataRequired()])
+    current_owed    = StringField('Current Owed Amount', validators=[DataRequired()])
+    interest_rate   = StringField('Card Interest Rate', validators=[DataRequired()])
+    due_date        = StringField('Due Date', validators=[DataRequired()])
+    min_calc        = StringField('Minimum Calculation Amount')
+    submit          = SubmitField('Track CreditCard')
 
 class DelForm(FlaskForm):
     id      = IntegerField('ID number of debt to remove: ')

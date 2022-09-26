@@ -74,6 +74,7 @@ class OtherDebts(db.Model):
     interest_rate   = db.Column(db.Float, nullable=False)
     min_payment     = db.Column(db.Float, nullable=True)
     due_date        = db.Column(db.DateTime, nullable=False)
+    #todo: payoff date needs to be changed to be nullable later
     payoff_date     = db.Column(db.DateTime, nullable=False)
     active          = db.Column(db.Boolean, nullable=False)
 
