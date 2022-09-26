@@ -1,23 +1,49 @@
 {% extends 'base.html' %}
 {% block content %}
     <div class="jumbotron">
-        <p>Let's look over your current information</p>
+        <p>Enter in your debts below</p>
     </div>
-    <!-- put something here to show the information entered -->
-    <div>
-        <form method="post" id="newLoan">
-            {{loan_form.hidden_tag()}}           <br>
-            {{loan_form.loan_name.label}}        <br>{{loan_form.loan_name}} <br>
-            {{loan_form.current_owed.label}}     <br>{{loan_form.current_owed}} <br>
-            {{loan_form.interest_rate.label}}    <br>{{loan_form.interest_rate}} <br>
-            {{loan_form.min_payment.label}}      <br>{{loan_form.min_payment}} <br>
-            {{loan_form.due_date.label}}         <br>{{loan_form.due_date}} <br>
-            {{loan_form.payoff_date.label}}      <br>{{loan_form.payoff_date}} <br><br>
-            {{loan_form.submit()}}
-        </form>
-        <form method="post" id="otherDebt">
+    
+    <div class="container">
+        <div class="row">
 
-        </form>
-        <form method="post" id=""></form>
+            <div class="col-sm">
+                <form method="post" id="newLoan">
+                    {{loan_form.hidden_tag()}}           <br>
+                    {{loan_form.loan_name.label}}        <br>{{loan_form.loan_name}}       <br>
+                    {{loan_form.current_owed.label}}     <br>{{loan_form.current_owed}}    <br>
+                    {{loan_form.interest_rate.label}}    <br>{{loan_form.interest_rate}}   <br>
+                    {{loan_form.min_payment.label}}      <br>{{loan_form.min_payment}}     <br>
+                    {{loan_form.due_date.label}}         <br>{{loan_form.due_date}}        <br>
+                    {{loan_form.payoff_date.label}}      <br>{{loan_form.payoff_date}} <br><br>
+                    {{loan_form.submit()}}
+                </form>
+            </div>
+            <div class="col-sm">
+                <form method="post" id="otherDebt">
+                    {{other_form.hidden_tag()}}         <br>
+                    {{other_form.debt_name.label}}      <br>{{other_form.debt_name}}       <br>
+                    {{other_form.current_owed.label}}   <br>{{other_form.current_owed}}    <br>
+                    {{other_form.interest_rate.label}}  <br>{{other_form.interest_rate}}   <br>
+                    {{other_form.min_payment.label}}    <br>{{other_form.min_payment}}     <br>
+                    {{other_form.due_date.label}}       <br>{{other_form.due_date}}        <br>
+                    {{other_form.payoff_date.label}}    <br>{{other_form.payoff_date}} <br><br>
+                    {{other_form.submit()}}
+                </form>
+            </div>
+            <div class="col-sm">
+                
+                <form method="post" id="newCC">
+                    {{cc_form.hidden_tag()}}        <br>
+                    {{cc_form.card_name.label}}     <br>{{cc_form.card_name}}       <br>
+                    {{cc_form.card_max.label}}      <br>{{cc_form.card_max}}        <br>
+                    {{cc_form.current_owed.label}}  <br>{{cc_form.current_owed}}    <br>
+                    {{cc_form.interest_rate.label}} <br>{{cc_form.interest_rate}}   <br>
+                    {{cc_form.due_date.label}}      <br>{{cc_form.due_date}}        <br>
+                    {{cc_form.min_calc.label}}      <br>{{cc_form.min_calc}}        <br><br>
+                    {{cc_form.submit()}}
+                </form>
+            </div>
+        </div>
     </div>
 {% endblock %}

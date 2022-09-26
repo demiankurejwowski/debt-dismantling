@@ -1,6 +1,6 @@
 #server py file
 
-from crypt import methods
+# from crypt import methods
 from os import environ
 from flask import Flask, render_template, render_template, url_for, redirect, request, flash, abort
 
@@ -8,7 +8,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager, login_user, login_required, logout_user
 from flask_bcrypt import Bcrypt
 
-from model import Loans, Users, db, database_connection
+from model import CreditCards, Loans, OtherDebts, Users, db, database_connection
 
 from forms import LoanForm, OtherForm, CCForm, DelForm, UpdateForm, LoginForm, RegistrationForm
 
@@ -91,8 +91,7 @@ def register():
 @app.route('/overview', methods=['GET','POST'])
 def overview():
     loan_form   = LoanForm()
-    other_form  = OtherForm()
-    cc_form     = CCForm()
+
 
     if loan_form.validate_on_submit():
         loan = Loans(loan_name      = loan_form.loan_name.data,
@@ -106,24 +105,17 @@ def overview():
         db.session.commit()
         flash("Loan has been added to your list.")
         return redirect(url_for('overview'))
-
-
-    if other_form.validate_on_submit():
-        pass
-
-
-    if cc_form.validate_on_submit():
-        pass
     
 
     return render_template('overview.html', loan_form=loan_form)
 
-@app.route('/addnew', methods=['GET', 'POST'])
+@app.route('/addnew', methods=['POST'])
 def addnew():
     loan_form   = LoanForm()
     other_form  = OtherForm()
     cc_form     = CCForm()
 
+
     if loan_form.validate_on_submit():
         loan = Loans(loan_name      = loan_form.loan_name.data,
                     current_owed    = loan_form.current_owed.data,
@@ -135,19 +127,42 @@ def addnew():
         db.session.add(loan)
         db.session.commit()
         flash("Loan has been added to your list.")
-        return redirect(url_for('overview'))
+        return redirect(url_for('debtadded'))
 
 
     if other_form.validate_on_submit():
-        other = OtherForm()
+        other = OtherDebts( debt_name       = other_form.debt_name.data,
+                            current_owed    = other_form.current_owed.data,
+                            interest_rate   = other_form.interest_rate.data,
+                            min_payment     = other_form.min_payment.data,
+                            due_date        = other_form.due_date.data,
+                            payoff_date     = other_form.payoff_date.data)
+        
+        db.session.add(other)
+        db.session.commit()
+        flash('Debt has been added to your list.')
+        return redirect(url_for('debtadded'))
 
 
     if cc_form.validate_on_submit():
-        pass
+        cc = CreditCards(card_name      = cc_form.card_name.data,
+                        card_max        = cc_form.card_max.data,
+                        current_owed    = cc_form.current_owed.data,
+                        interest_rate   = cc_form.interest_rate.data,
+                        due_date        = cc_form.due_date.data,
+                        min_calc        = cc_form.min_calc.data)
+
+        db.session.add(cc)
+        db.session.commit()
+        flash('CreditCard has been added to your list.')
+        return redirect(url_for('debtadded'))
     
 
-    return render_template('overview.html', loan_form=loan_form)
+    return render_template('addnew.html', loan_form=loan_form, other_form=other_form, cc_form=cc_form)
 
+@app.route('/debtadded')
+def debtadded():
+    return render_template('debtadded.html')
 
 if __name__ == '__main__':
     database_connection(app)
