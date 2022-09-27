@@ -1,4 +1,3 @@
-# db and login_manager
 
 from os import environ
 from xmlrpc.client import DateTime

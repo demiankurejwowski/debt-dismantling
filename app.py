@@ -91,24 +91,8 @@ def register():
 @app.route('/overview', methods=['GET','POST'])
 @login_required
 def overview():
-    loan_form   = LoanForm()
 
-
-    if loan_form.validate_on_submit():
-        loan = Loans(loan_name      = loan_form.loan_name.data,
-                    current_owed    = loan_form.current_owed.data,
-                    interest_rate   = loan_form.interest_rate.data,
-                    min_payment     = loan_form.min_payment.data,
-                    due_date        = loan_form.due_date.data,
-                    payoff_date     = loan_form.payoff_date.data)
-
-        db.session.add(loan)
-        db.session.commit()
-        flash("Loan has been added to your list.")
-        return redirect(url_for('overview'))
-    
-
-    return render_template('overview.html', loan_form=loan_form)
+    return render_template('overview.html')
 
 @app.route('/addnew', methods=['GET','POST'])
 @login_required
@@ -118,47 +102,52 @@ def addnew():
     cc_form     = CCForm()
 
 
-    if loan_form.validate_on_submit():
-        loan = Loans(loan_name      = loan_form.loan_name.data,
-                    current_owed    = loan_form.current_owed.data,
-                    interest_rate   = loan_form.interest_rate.data,
-                    min_payment     = loan_form.min_payment.data,
-                    due_date        = loan_form.due_date.data,
-                    payoff_date     = loan_form.payoff_date.data)
+    if request.method == 'POST':
+        if 'Track Loan' in request.form:
+            if loan_form.validate_on_submit():
+                loan = Loans(loan_name      = loan_form.loan_name.data,
+                            current_owed    = loan_form.current_owed.data,
+                            interest_rate   = loan_form.interest_rate.data,
+                            min_payment     = loan_form.min_payment.data,
+                            due_date        = loan_form.due_date.data,
+                            payoff_date     = loan_form.payoff_date.data)
 
-        db.session.add(loan)
-        db.session.commit()
-        flash("Loan has been added to your list.")
-        return redirect(url_for('debtadded'))
-
-
-    if other_form.validate_on_submit():
-        other = OtherDebts( debt_name       = other_form.debt_name.data,
-                            current_owed    = other_form.current_owed.data,
-                            interest_rate   = other_form.interest_rate.data,
-                            min_payment     = other_form.min_payment.data,
-                            due_date        = other_form.due_date.data,
-                            payoff_date     = other_form.payoff_date.data)
-        
-        db.session.add(other)
-        db.session.commit()
-        flash('Debt has been added to your list.')
-        return redirect(url_for('debtadded'))
+                db.session.add(loan)
+                db.session.commit()
+                flash("Loan has been added to your list.")
+                return redirect(url_for('debtadded'))
 
 
-    if cc_form.validate_on_submit():
-        cc = CreditCards(card_name      = cc_form.card_name.data,
-                        card_max        = cc_form.card_max.data,
-                        current_owed    = cc_form.current_owed.data,
-                        interest_rate   = cc_form.interest_rate.data,
-                        due_date        = cc_form.due_date.data,
-                        min_calc        = cc_form.min_calc.data)
+        elif request.form['submit_button'] == 'Track Debt':
+            if other_form.validate_on_submit():
+                other = OtherDebts( debt_name       = other_form.debt_name.data,
+                                    current_owed    = other_form.current_owed.data,
+                                    interest_rate   = other_form.interest_rate.data,
+                                    min_payment     = other_form.min_payment.data,
+                                    due_date        = other_form.due_date.data,
+                                    payoff_date     = other_form.payoff_date.data)
+                
+                db.session.add(other)
+                db.session.commit()
+                flash('Debt has been added to your list.')
+                return redirect(url_for('debtadded'))
 
-        db.session.add(cc)
-        db.session.commit()
-        flash('CreditCard has been added to your list.')
-        return redirect(url_for('debtadded'))
+
+        elif request.form['submit_button'] == 'Track Loan':
+            if cc_form.validate_on_submit():
+                cc = CreditCards(card_name      = cc_form.card_name.data,
+                                card_max        = cc_form.card_max.data,
+                                current_owed    = cc_form.current_owed.data,
+                                interest_rate   = cc_form.interest_rate.data,
+                                due_date        = cc_form.due_date.data,
+                                min_calc        = cc_form.min_calc.data)
+
+                db.session.add(cc)
+                db.session.commit()
+                flash('CreditCard has been added to your list.')
+                return redirect(url_for('debtadded'))
     
+        
 
     return render_template('addnew.html', loan_form=loan_form, other_form=other_form, cc_form=cc_form)
 
