@@ -35,31 +35,34 @@ class RegistrationForm(FlaskForm):
 
 class LoanForm(FlaskForm):
     loan_name       = StringField('Loan Name',validators=[DataRequired()])
-    current_owed    = StringField('Current Amount Owed', validators=[DataRequired()])
-    interest_rate   = StringField('Interest Rate',validators=[DataRequired()])
-    min_payment     = StringField('Minimum Payment Amount',validators=[DataRequired()])
-    due_date        = DateField('Due Date', format='%Y%m%d',validators=[DataRequired()])
-    payoff_date     = DateField('Payoff Date', format='%Y%m%d',validators=[DataRequired()])
-    submit          = SubmitField('Track Loan', name='loan')
+    current_owed_l  = StringField('Current Amount Owed', validators=[DataRequired()])
+    interest_rate_l = StringField('Interest Rate',validators=[DataRequired()])
+    min_payment_l   = StringField('Minimum Payment Amount',validators=[DataRequired()])
+    due_date_l      = DateField('Due Date', format='%Y-%m-%d',validators=[DataRequired()])
+    payoff_date_l   = DateField('Payoff Date', format='%Y-%m-%d',validators=[DataRequired()])
+    submit_l        = SubmitField('Track Loan', name='loan')
 
 class OtherForm(FlaskForm):
     debt_name       = StringField('Debt Name', validators=[DataRequired()])
-    current_owed    = StringField('Current Amount Owed', validators=[DataRequired()])
-    interest_rate   = StringField('Interest Rate', validators=[DataRequired()])
-    min_payment     = StringField('Minimum Payment Amount')
-    due_date        = DateField('Due Date', format='%m%d%Y', validators=[DataRequired()])
-    payoff_date     = DateField('Payoff Date (if applicable)', format='%m%d%Y', validators=[DataRequired()])
-    submit          = SubmitField('Track Debt', name='other')
+    current_owed_o  = StringField('Current Amount Owed', validators=[DataRequired()])
+    interest_rate_o = StringField('Interest Rate', validators=[DataRequired()])
+    min_payment_o   = StringField('Minimum Payment Amount')
+    due_date_o      = DateField('Due Date', format='%Y-%m-%d', validators=[DataRequired()])
+    payoff_date_o   = DateField('Payoff Date (if applicable)', format='%Y-%m-%d', validators=[DataRequired()])
+    submit_o        = SubmitField('Track Debt', name='other')
 
 class CCForm(FlaskForm):
     card_name       = StringField('CreditCard Name', validators=[DataRequired()])
-    card_max        = StringField('Card Max Amount', validators=[DataRequired()])
-    current_owed    = StringField('Current Amount Owed', validators=[DataRequired()])
-    interest_rate   = StringField('Interest Rate', validators=[DataRequired()])
-    min_calc        = StringField('Minimum Calculation Amount')
-    due_date        = DateField('Due Date', format='%m%d%Y', validators=[DataRequired()])
-    submit          = SubmitField('Track CreditCard', name='cc')
+    card_max_cc     = StringField('Card Max Amount', validators=[DataRequired()])
+    current_owed_cc = StringField('Current Amount Owed', validators=[DataRequired()])
+    interest_rate_cc= StringField('Interest Rate', validators=[DataRequired()])
+    min_calc_cc     = StringField('Minimum Calculation Amount')
+    due_date_cc     = DateField('Due Date', format='%Y-%m-%d', validators=[DataRequired()])
+    submit_cc       = SubmitField('Track CreditCard', name='cc')
 
+class BudgetForm(FlaskForm):
+    spending_amount = StringField('Monthly Budget Amount ', validators=[DataRequired()])
+    submit_b        = SubmitField('Submit Budget', name='budget')
 class DelForm(FlaskForm):
     id      = IntegerField('ID number of debt to remove: ')
     submit  = SubmitField("Remove Debt")

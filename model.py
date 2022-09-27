@@ -21,6 +21,8 @@ class Users(db.Model,UserMixin):
     loans           = db.relationship('Loans', backref='users', lazy=True)
     other_debts     = db.relationship('OtherDebts', backref='users', lazy=True)
     credit_cards    = db.relationship('CreditCards', backref='users', lazy=True)
+    monthly_budget  = db.relationship('MonthlyBudget', backref='users', lazy=True)
+
 
     def __init__(self, username="", email="", password="", state=""):
         self.username       = username
@@ -41,7 +43,7 @@ class Loans(db.Model):
     __tablename__ = 'loans'
 
     debt_id         = db.Column(db.Integer, primary_key=True)
-    user_id         = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user_id         = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     loan_name       = db.Column(db.String(64), nullable=False, unique=True)
     current_owed    = db.Column(db.Float, nullable=False)
     interest_rate   = db.Column(db.Float, nullable=False)
@@ -50,7 +52,8 @@ class Loans(db.Model):
     payoff_date     = db.Column(db.Date, nullable=False)
     active          = db.Column(db.Boolean, nullable=False)
 
-    def __init__(self, loan_name="", current_owed = "", interest_rate="", min_payment="", due_date="", payoff_date="", active=True):
+    def __init__(self, user_id, loan_name="", current_owed = "", interest_rate="", min_payment="", due_date="", payoff_date="", active=True):
+        self.user_id        = user_id
         self.loan_name      = loan_name
         self.current_owed   = current_owed
         self.interest_rate  = interest_rate
@@ -58,6 +61,7 @@ class Loans(db.Model):
         self.due_date       = due_date
         self.payoff_date    = payoff_date
         self.active         = active
+        
 
     def __repr__(self):
         return f'Something to return'
@@ -67,7 +71,7 @@ class OtherDebts(db.Model):
     __tablename__ = 'other_debts'
 
     other_id        = db.Column(db.Integer, primary_key=True)
-    user_id         = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user_id         = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     debt_name       = db.Column(db.String(64), nullable=False)
     current_owed    = db.Column(db.Float, nullable=False)
     interest_rate   = db.Column(db.Float, nullable=False)
@@ -76,7 +80,8 @@ class OtherDebts(db.Model):
     payoff_date     = db.Column(db.Date, nullable=True)
     active          = db.Column(db.Boolean, nullable=False)
 
-    def __init__(self, debt_name="", current_owed="", interest_rate="", min_payment="", due_date="", payoff_date="", active=True):
+    def __init__(self, user_id, debt_name="", current_owed="", interest_rate="", min_payment="", due_date="", payoff_date="", active=True):
+        self.user_id        = user_id
         self.debt_name      = debt_name
         self.current_owed   = current_owed
         self.interest_rate  = interest_rate
@@ -93,7 +98,7 @@ class CreditCards(db.Model):
     __tablename__ = 'credit_cards'
 
     cc_id           = db.Column(db.Integer, primary_key=True)
-    user_id         = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user_id         = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     card_name       = db.Column(db.String(64), nullable=False)
     card_max        = db.Column(db.Integer, nullable=False)
     current_owed    = db.Column(db.Float, nullable=False)
@@ -102,7 +107,8 @@ class CreditCards(db.Model):
     due_date        = db.Column(db.Date, nullable=False)
     active          = db.Column(db.Boolean, nullable=False)
 
-    def __init__(self, card_name="", card_max="", current_owed="", interest_rate="", due_date="", min_calc=0.04, active=True):
+    def __init__(self, user_id, card_name="", card_max="", current_owed="", interest_rate="", due_date="", min_calc=0.04, active=True):
+        self.user_id        = user_id
         self.card_name      = card_name
         self.card_max       = card_max
         self.current_owed   = current_owed
@@ -110,6 +116,20 @@ class CreditCards(db.Model):
         self.due_date       = due_date
         self.min_calc       = min_calc
         self.active         = active
+
+    def __repr__(self):
+        return f'Something to return'
+
+class MonthlyBudget(db.Model):
+    __tablename__ = 'monthly_budget'
+
+    budget_id       = db.Column(db.Integer, primary_key=True)
+    user_id         = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    spending_amount = db.Column(db.Float, nullable=False)
+
+    def __init__(self, user_id, spending_amount):
+        self.user_id            = user_id
+        self.spending_amount    = spending_amount
 
     def __repr__(self):
         return f'Something to return'
