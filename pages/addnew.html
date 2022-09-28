@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
     <div class="jumbotron d-flex justify-content-center">
-        <p>Enter in your debts below</p>
+        <h3>Enter in your debts below</h3>
     </div>
     
     <div class="container">
         <div class="row">
             <div class="col d-flex justify-content-center">
-                <form method="post">
+                <form method="POST">
                     {{budget_form.hidden_tag()}}
                     {{budget_form.spending_amount.label}} {{budget_form.spending_amount}}
                     {{budget_form.submit_b()}}

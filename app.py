@@ -1,6 +1,7 @@
 #server py file
 
 # from crypt import methods
+from email import message
 from os import environ
 from flask import Flask, render_template, render_template, url_for, redirect, request, flash, abort
 
@@ -67,6 +68,9 @@ def login():
 
             return redirect(next)
 
+        else:
+            flash('Incorrect log-in')
+
     return render_template('login.html',form=form)
 
 @app.route('/register', methods=['GET','POST'])
@@ -92,16 +96,21 @@ def register():
 @app.route('/overview', methods=['GET','POST'])
 @login_required
 def overview():
-    # update_form = UpdateForm()
-    budget  = MonthlyBudget.query.filter_by(user_id=current_user.id).first()
-    loans   = Loans.query.filter_by(user_id=current_user.id).all()
-    other   = OtherDebts.query.filter_by(user_id=current_user.id).all()
-    cc      = CreditCards.query.filter_by(user_id=current_user.id).all()
-    print(other)
-    print(cc)
-    # for loan in all_loans:
-    #     print(loan.loan_name)
-    return render_template('overview.html', budget=budget, loans=loans, other=other, cc=cc)
+    update_form = UpdateForm()
+    del_form    = DelForm()
+    budget      = MonthlyBudget.query.filter_by(user_id=current_user.id).first()
+    loans       = Loans.query.filter_by(user_id=current_user.id).all()
+    other       = OtherDebts.query.filter_by(user_id=current_user.id).all()
+    cc          = CreditCards.query.filter_by(user_id=current_user.id).all()
+    # all_d   = Loans.query.join(OtherDebts).join(CreditCards).filter_by(user_id=current_user.id).all()
+    # print(all_d)
+
+    if del_form.validate_on_submit():
+        if request.method == "POST":
+            for this in del_form.data:
+                print(this)
+
+    return render_template('overview.html', budget=budget, loans=loans, other=other, cc=cc, update_form=update_form, del_form=del_form)
 
 @app.route('/addnew', methods=['GET','POST'])
 @login_required
@@ -142,7 +151,7 @@ def addnew():
 
         db.session.add(loan)
         db.session.commit()
-        flash("Loan has been added to your list.")
+        flash(f"{loan.loan_name} has been added to your list.")
         return redirect(url_for('debtadded'))
 
 
@@ -157,7 +166,7 @@ def addnew():
         
         db.session.add(other)
         db.session.commit()
-        flash('Debt has been added to your list.')
+        flash(f'{other.debt_name} has been added to your list.')
         return redirect(url_for('debtadded'))
 
 
@@ -172,7 +181,7 @@ def addnew():
 
         db.session.add(cc)
         db.session.commit()
-        flash('CreditCard has been added to your list.')
+        flash(f'{cc.card_name} has been added to your list.')
         return redirect(url_for('debtadded'))
         
 

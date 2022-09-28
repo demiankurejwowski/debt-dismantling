@@ -66,8 +66,8 @@ class BudgetForm(FlaskForm):
     spending_amount = StringField('Monthly Budget Amount ', validators=[DataRequired()])
     submit_b        = SubmitField('Submit Budget', name='budget')
 class DelForm(FlaskForm):
-    id      = IntegerField('ID number of debt to remove: ')
-    submit  = SubmitField("Remove Debt")
+    delete  = StringField('Remove')
+    submit  = SubmitField('Detele')
 
 class UpdateForm(FlaskForm):
     update        = StringField('Redacted')
