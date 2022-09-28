@@ -3,13 +3,76 @@
     <div class="jumbotron d-flex justify-content-center">
         <p>Let's look over your current information</p>
     </div>
-    <!-- put something here to show the information entered -->
+    
     <div class="container">
         <div class="row d-flex justify-content-center">
-            <p>Information for a monthly budget of: {{budget.spending_amount}}</p>
+            <h3>Information for a monthly budget of: {{budget.spending_amount}}</h3>
         </div>
-        <div class="row d-flex justify-content-center">
-            <p>Placeholder for graphs</p>
-        </div>
+        <table class="table table-striped table-hover table-dark">
+            <thead>
+                <th scope="col">Name</th>
+                <th scope="col">Owed</th>
+                <th scope="col">Interest Rate</th>
+                <th scope="col">Minimum Payment</th>
+                <th scope="col">Edit Debt Amount</th>
+                <th scope="col">Delete Debt</th>
+            </thead>
+            <tbody>
+                {%for loan in loans%}
+                <tr>
+                    <th>{{loan.loan_name}}</th>
+                    <td>${{loan.current_owed}}</td>
+                    <td>{{loan.interest_rate}}%</td>
+                    <td>{{loan.min_payment}}</td>
+                    <td>
+                        <!-- find a way to loop through db and make either the UpdateForm or the id to accept python loop -->
+                        <input action="POST" id="edit">
+                        <button type="button" class="btn btn-primary" id="edit-{{loan.debt_id}}">Edit {{loan.debt_id}}</button>
+                        </input>
+                    </td>
+                    <td>
+                        <!-- Need to figure out the same thing for this position to create delete buttons that will accept arguments to locate db id -->
+                        <button type="button" class="btn btn-danger">Delete</button>
+                    </td>
+                </tr>
+                {%endfor%}
+                {%for debts in other%}
+                <tr>
+                    <th>{{debts.debt_name}}</th>
+                    <td>${{debts.current_owed}}</td>
+                    <td>{{debts.interest_rate}}%</td>
+                    <td>{{debts.min_payment}}</td>
+                    <td>
+                        <!-- find a way to loop through db and make either the UpdateForm or the id to accept python loop -->
+                        <input action="POST" id="edit">
+                        <button type="button" class="btn btn-primary" id="edit">Edit</button>
+                        </input>
+                    </td>
+                    <td>
+                        <!-- Need to figure out the same thing for this position to create delete buttons that will accept arguments to locate db id -->
+                        <button type="button" class="btn btn-danger">Delete</button>
+                    </td>
+                </tr>
+                {%endfor%}
+                {%for card in cc%}
+                <tr>
+                    <th>{{card.card_name}}</th>
+                    <td>${{card.current_owed}}</td>
+                    <td>{{card.interest_rate}}%</td>
+                    <td>{{card.min_calc}}</td>
+                    <td>
+                        <!-- find a way to loop through db and make either the UpdateForm or the id to accept python loop -->
+                        <input action="POST" id="edit">
+                        <button type="button" class="btn btn-primary" id="edit">Edit</button>
+                        </input>
+                    </td>
+                    <td>
+                        <!-- Need to figure out the same thing for this position to create delete buttons that will accept arguments to locate db id -->
+                        <button type="button" class="btn btn-danger">Delete</button>
+                    </td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
     </div>
 {% endblock %}

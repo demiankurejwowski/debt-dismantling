@@ -1,5 +1,7 @@
 
+from inspect import Attribute
 from tokenize import String
+from turtle import update
 from unicodedata import name
 from wsgiref.validate import validator
 from xmlrpc.client import DateTime
@@ -68,6 +70,7 @@ class DelForm(FlaskForm):
     submit  = SubmitField("Remove Debt")
 
 class UpdateForm(FlaskForm):
-    id      = IntegerField('ID of debt to update: ')
-    submit  = SubmitField("Update Debt")
+    update        = StringField('Redacted')
+    submit        = SubmitField("Update Debt")
+
     

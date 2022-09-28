@@ -63,7 +63,7 @@ class Loans(db.Model):
         
 
     def __repr__(self):
-        return f'Something to return'
+        return f'{self.loan_name}'
 
 class OtherDebts(db.Model):
 
@@ -79,7 +79,7 @@ class OtherDebts(db.Model):
     payoff_date     = db.Column(db.Date, nullable=True)
     active          = db.Column(db.Boolean, nullable=False)
 
-    def __init__(self, user_id, debt_name="", current_owed="", interest_rate="", min_payment="", due_date="", payoff_date="", active=True):
+    def __init__(self, user_id, debt_name, current_owed, interest_rate, min_payment, due_date, payoff_date, active=True):
         self.user_id        = user_id
         self.debt_name      = debt_name
         self.current_owed   = current_owed
@@ -90,7 +90,7 @@ class OtherDebts(db.Model):
         self.active         = active
     
     def __repr__(self):
-        return f'Something to return'
+        return f'{self.debt_name}'
 
 class CreditCards(db.Model):
 
@@ -106,7 +106,7 @@ class CreditCards(db.Model):
     due_date        = db.Column(db.Date, nullable=False)
     active          = db.Column(db.Boolean, nullable=False)
 
-    def __init__(self, user_id, card_name="", card_max="", current_owed="", interest_rate="", due_date="", min_calc=0.04, active=True):
+    def __init__(self, user_id, card_name, card_max, current_owed, interest_rate, due_date, min_calc, active=True):
         self.user_id        = user_id
         self.card_name      = card_name
         self.card_max       = card_max
@@ -117,7 +117,7 @@ class CreditCards(db.Model):
         self.active         = active
 
     def __repr__(self):
-        return f'Something to return'
+        return f'{self.card_name}'
 
 class MonthlyBudget(db.Model):
     __tablename__ = 'monthly_budget'

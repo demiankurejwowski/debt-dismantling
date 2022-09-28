@@ -87,13 +87,21 @@ def register():
     return render_template('register.html', form=form)
 
 #todo: Currently working on showing the data from the tables
+#! Right here look at me lol
 
 @app.route('/overview', methods=['GET','POST'])
 @login_required
 def overview():
-    budget = MonthlyBudget.query.filter_by(user_id=current_user.id).first()
-    print(budget)
-    return render_template('overview.html', budget=budget)
+    # update_form = UpdateForm()
+    budget  = MonthlyBudget.query.filter_by(user_id=current_user.id).first()
+    loans   = Loans.query.filter_by(user_id=current_user.id).all()
+    other   = OtherDebts.query.filter_by(user_id=current_user.id).all()
+    cc      = CreditCards.query.filter_by(user_id=current_user.id).all()
+    print(other)
+    print(cc)
+    # for loan in all_loans:
+    #     print(loan.loan_name)
+    return render_template('overview.html', budget=budget, loans=loans, other=other, cc=cc)
 
 @app.route('/addnew', methods=['GET','POST'])
 @login_required
@@ -108,13 +116,12 @@ def addnew():
     if budget_form.validate_on_submit():
         if get_budget:
             get_budget.spending_amount = budget_form.spending_amount.data
-            print(get_budget)
 
             db.session.add(get_budget)
             db.session.commit()
             flash(f'Monthly budget has been set at ${get_budget.spending_amount}')
+
         else:
-            print('this')
             budget = MonthlyBudget( user_id         = user.id,
                                     spending_amount = budget_form.spending_amount.data)
 
@@ -140,7 +147,8 @@ def addnew():
 
 
     if other_form.validate_on_submit():
-        other = OtherDebts( debt_name       = other_form.debt_name.data,
+        other = OtherDebts( user_id         = user.id,
+                            debt_name       = other_form.debt_name.data,
                             current_owed    = other_form.current_owed_o.data,
                             interest_rate   = other_form.interest_rate_o.data,
                             min_payment     = other_form.min_payment_o.data,
@@ -154,7 +162,8 @@ def addnew():
 
 
     if cc_form.validate_on_submit():
-        cc = CreditCards(card_name      = cc_form.card_name.data,
+        cc = CreditCards(user_id        = user.id,
+                        card_name       = cc_form.card_name.data,
                         card_max        = cc_form.card_max_cc.data,
                         current_owed    = cc_form.current_owed_cc.data,
                         interest_rate   = cc_form.interest_rate_cc.data,
