@@ -11,11 +11,6 @@ from flask_bcrypt import Bcrypt
 from model import CreditCards, Loans, MonthlyBudget, OtherDebts, Users, db, database_connection
 from forms import LoanForm, OtherForm, CCForm, DelForm, UpdateForm, LoginForm, RegistrationForm, BudgetForm
 
-# this is the one that makes the migration work?
-# from .model import CreditCards, Loans, MonthlyBudget, OtherDebts, Users, db, database_connection
-# from .forms import LoanForm, OtherForm, CCForm, DelForm, UpdateForm, LoginForm, RegistrationForm, BudgetForm
-
-
 
 
 app = Flask(__name__, template_folder='pages')
@@ -96,7 +91,8 @@ def register():
 @app.route('/overview', methods=['GET','POST'])
 @login_required
 def overview():
-    budget = MonthlyBudget.query.all()
+    budget = MonthlyBudget.query.filter_by(user_id=current_user.id).first()
+    print(budget)
     return render_template('overview.html', budget=budget)
 
 @app.route('/addnew', methods=['GET','POST'])
@@ -107,14 +103,25 @@ def addnew():
     cc_form     = CCForm()
     budget_form = BudgetForm()
     user        = current_user
+    get_budget  = MonthlyBudget.query.filter_by(user_id=current_user.id).first()
 
     if budget_form.validate_on_submit():
-        budget = MonthlyBudget( user_id         = user.id,
-                                spending_amount = budget_form.spending_amount.data)
+        if get_budget:
+            get_budget.spending_amount = budget_form.spending_amount.data
+            print(get_budget)
 
-        db.session.add(budget)
-        db.session.commit()
-        flash(f'Monthly budget has been set at ${budget.spending_amount}')
+            db.session.add(get_budget)
+            db.session.commit()
+            flash(f'Monthly budget has been set at ${get_budget.spending_amount}')
+        else:
+            print('this')
+            budget = MonthlyBudget( user_id         = user.id,
+                                    spending_amount = budget_form.spending_amount.data)
+
+            db.session.add(budget)
+            db.session.commit()
+            flash(f'Monthly budget has been set at ${budget.spending_amount}')
+    
         return redirect(url_for('debtadded'))
 
     if loan_form.validate_on_submit():

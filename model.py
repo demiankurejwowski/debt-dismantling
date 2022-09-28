@@ -18,10 +18,9 @@ class Users(db.Model,UserMixin):
     email           = db.Column(db.String(64), unique=True, index=True, nullable=False)
     password_hash   = db.Column(db.String(255), nullable=False)
     state           = db.Column(db.String(2), nullable=True)
-    loans           = db.relationship('Loans', backref='users', lazy=True)
-    other_debts     = db.relationship('OtherDebts', backref='users', lazy=True)
-    credit_cards    = db.relationship('CreditCards', backref='users', lazy=True)
-    monthly_budget  = db.relationship('MonthlyBudget', backref='users', lazy=True)
+    loans           = db.relationship('Loans', backref='user', lazy=True)
+    other_debts     = db.relationship('OtherDebts', backref='user', lazy=True)
+    credit_cards    = db.relationship('CreditCards', backref='user', lazy=True)
 
 
     def __init__(self, username="", email="", password="", state=""):
@@ -132,7 +131,7 @@ class MonthlyBudget(db.Model):
         self.spending_amount    = spending_amount
 
     def __repr__(self):
-        return f'Something to return'
+        return f'{self.spending_amount}'
 
 def database_connection(app):
     app.config['SQLALCHEMY_DATABASE_URI'] = environ['DATABASE_URI']
