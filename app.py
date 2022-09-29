@@ -99,10 +99,25 @@ def overview():
     loans       = Loans.query.filter_by(user_id=current_user.id).all()
     other       = OtherDebts.query.filter_by(user_id=current_user.id).all()
     cc          = CreditCards.query.filter_by(user_id=current_user.id).all()
+
+    #! Used for loops due to time contraints. Will modify later
+    total       = 0
+    total_min   = 0
+    for x in loans:
+        total += x.current_owed
+        total_min += x.min_payment
+    for y in other:
+        total += y.current_owed
+        total_min += y.min_payment
+    for z in cc:
+        total += z.current_owed
+        total_min += (z.current_owed * z.min_calc)
+    
+
     # all_d   = Loans.query.join(OtherDebts).join(CreditCards).filter_by(user_id=current_user.id).all()
     # print(all_d)
 
-    return render_template('overview.html', budget=budget, loans=loans, other=other, cc=cc, update_form=update_form, del_form=del_form)
+    return render_template('overview.html', budget=budget, loans=loans, other=other, cc=cc, update_form=update_form, del_form=del_form, total=total, total_min=total_min)
 
 @app.route('/delete', methods=['GET', 'POST'])
 @login_required
