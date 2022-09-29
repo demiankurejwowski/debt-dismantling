@@ -90,9 +90,6 @@ def register():
 
     return render_template('register.html', form=form)
 
-#todo: Currently working on showing the data from the tables
-#! Right here look at me lol
-
 @app.route('/overview', methods=['GET','POST'])
 @login_required
 def overview():
@@ -105,12 +102,79 @@ def overview():
     # all_d   = Loans.query.join(OtherDebts).join(CreditCards).filter_by(user_id=current_user.id).all()
     # print(all_d)
 
-    if del_form.validate_on_submit():
-        if request.method == "POST":
-            for this in del_form.data:
-                print(this)
-
     return render_template('overview.html', budget=budget, loans=loans, other=other, cc=cc, update_form=update_form, del_form=del_form)
+
+@app.route('/delete', methods=['GET', 'POST'])
+@login_required
+def delete():
+    if request.method == 'POST':
+        if 'loan_delete' in request.form:
+            l_id    = request.form['debt_id']
+            loan    = Loans.query.filter_by(debt_id=l_id).first()
+
+            db.session.delete(loan)
+            db.session.commit()
+            flash(f'{loan} was deleted successfully.')
+
+        elif 'other_delete' in request.form:
+            o_id    = request.form['other_id']
+            debt    = OtherDebts.query.filter_by(other_id=o_id).first()
+
+            db.session.delete(debt)
+            db.session.commit()
+            flash(f'{debt} was deleted successfully.')
+
+        elif 'cc_delete' in request.form:
+            cc_id   = request.form['cc_id']
+            cc      = CreditCards.query.filter_by(cc_id=cc_id).first()
+
+            db.session.delete(cc)
+            db.session.commit()
+            flash(f'{cc} was deleted successfully.')
+
+        else:
+            print('error encountered')
+  
+        
+    return redirect(url_for('overview'))
+
+@app.route('/update', methods=['GET', 'POST'])
+@login_required
+def update():
+    if request.method == 'POST':
+        if 'loan_edit' in request.form:
+            l_id                = request.form['debt_id']
+            loan                = Loans.query.filter_by(debt_id=l_id).first()
+            update              = request.form['edit_amount']
+            loan.current_owed   = update
+
+            db.session.add(loan)
+            db.session.commit()
+            flash(f'{loan} was updated successfully to {loan.current_owed}.')
+
+        elif 'other_edit' in request.form:
+            o_id                = request.form['debt_id']
+            debt                = OtherDebts.query.filter_by(other_id=o_id).first()
+            update              = request.form['edit_amount']
+            debt.current_owed   = update
+
+            db.session.add(debt)
+            db.session.commit()
+            flash(f'{debt} was updated successfully to {debt.current_owed}.')
+
+        elif 'cc_edit' in request.form:
+            cc_id               = request.form['debt_id']
+            cc                  = CreditCards.query.filter_by(cc_id=cc_id).first()
+            update              = request.form['edit_amount']
+            cc.current_owed     = update
+            db.session.add(cc)
+            db.session.commit()
+            flash(f'{cc} was updated successfully to {cc.current_owed}.')
+
+        else:
+            print('error encountered')
+
+    return redirect(url_for('overview'))
 
 @app.route('/addnew', methods=['GET','POST'])
 @login_required

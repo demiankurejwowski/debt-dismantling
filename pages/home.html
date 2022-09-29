@@ -8,8 +8,10 @@
         {% endif %}
     </div>
     <div class="d-flex justify-content-center">
-        <p>Select "Overview" to see your current debts and debt destro details
+        {% if current_user.is_authenticated %}
+        <p>Select "Overview" to see your current debts and Debt Dismantling details
         <br><br>
         Or select "Add Debt" to build your portfolio</p>
+        {% endif %}
     </div>
 {% endblock %}

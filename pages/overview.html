@@ -25,20 +25,16 @@
                     <td>{{loan.interest_rate}}%</td>
                     <td>{{loan.min_payment}}</td>
                     <td>
-                        <!-- <form method="POST"> -->
-                        <!-- find a way to loop through db and make either the UpdateForm or the id to accept python loop -->
-                        <input action="POST" id="edit">
-                        <!-- name table type and then id the id -->
-                        <button name="loan_update" type="button" class="btn btn-primary" id="{{loan.debt_id}}">Edit</button>
-                        </input>
+                        <form action="/update" method="POST" id="{{loan.debt_id}}">
+                            <input type="hidden" id="debt_id" name="debt_id" value="{{loan.debt_id}}">
+                            <input type="text" name="edit_amount" id="{{loan.debt_id}}" required>
+                            <input type="submit" name="loan_edit" class="btn btn-primary" id="{{loan.debt_id}}" value="Edit"></input>
                         </form>
                     </td>
                     <td>
-                        <!-- Need to figure out the same thing for this position to create delete buttons that will accept arguments to locate db id -->
-                        <!-- <button name="loan_delete" type="button" class="btn btn-danger" id="{{loan.debt_id}}">Delete</button> -->
-                        <form method="POST" id="{{loan.debt_id}}">
-                            {{del_form.hidden_tag()}}
-                            {{del_form.submit(class="btn btn-danger", value="loan_delete")}}
+                        <form action="/delete" method="POST" id="{{loan.debt_id}}">
+                            <input type="hidden" id="debt_id" name="debt_id" value="{{loan.debt_id}}">
+                            <input type="submit" name="loan_delete" class="btn btn-danger" id="{{loan.debt_id}}" value="Delete"></input>
                         </form>
                     </td>
                 </tr>
@@ -50,14 +46,17 @@
                     <td>{{debts.interest_rate}}%</td>
                     <td>{{debts.min_payment}}</td>
                     <td>
-                        <!-- find a way to loop through db and make either the UpdateForm or the id to accept python loop -->
-                        <input action="POST" id="edit">
-                        <button type="button" class="btn btn-primary" id="edit">Edit</button>
-                        </input>
+                        <form action="/update" method="POST" id="{{debts.other_id}}">
+                            <input type="hidden" id="debt_id" name="debt_id" value="{{debts.other_id}}">
+                            <input type="text" name="edit_amount" id="{{debts.other_id}}" required>
+                            <input type="submit" name="other_edit" class="btn btn-primary" id="{{debts.other_id}}" value="Edit"></input>
+                        </form>
                     </td>
                     <td>
-                        <!-- Need to figure out the same thing for this position to create delete buttons that will accept arguments to locate db id -->
-                        <button type="button" class="btn btn-danger">Delete</button>
+                        <form action="/delete" method="POST" id="{{debts.other_id}}">
+                            <input type="hidden" id="other_id" name="other_id" value="{{debts.other_id}}">
+                            <input type="submit" name="other_delete" class="btn btn-danger" id="{{debts.other_id}}" value="Delete"></input>
+                        </form>
                     </td>
                 </tr>
                 {%endfor%}
@@ -68,14 +67,17 @@
                     <td>{{card.interest_rate}}%</td>
                     <td>{{card.min_calc * card.current_owed}}</td>
                     <td>
-                        <!-- find a way to loop through db and make either the UpdateForm or the id to accept python loop -->
-                        <input action="POST" id="edit">
-                        <button type="button" class="btn btn-primary" id="edit">Edit</button>
-                        </input>
+                        <form action="/update" method="POST" id="{{card.cc_id}}">
+                            <input type="hidden" id="debt_id" name="debt_id" value="{{card.cc_id}}">
+                            <input type="text" name="edit_amount" id="{{card.cc_id}}" required>
+                            <input type="submit" name="cc_edit" class="btn btn-primary" id="{{card.cc_id}}" value="Edit"></input>
+                        </form>
                     </td>
                     <td>
-                        <!-- Need to figure out the same thing for this position to create delete buttons that will accept arguments to locate db id -->
-                        <button type="button" class="btn btn-danger">Delete</button>
+                        <form action="/delete" method="POST" id="{{card.cc_id}}">
+                            <input type="hidden" id="cc_id" name="cc_id" value="{{card.cc_id}}">
+                            <input type="submit" name="cc_delete" class="btn btn-danger" id="{{card.cc_id}}" value="Delete"></input>
+                        </form>
                     </td>
                 </tr>
                 {%endfor%}
