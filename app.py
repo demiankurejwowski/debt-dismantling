@@ -101,9 +101,17 @@ def overview():
     cc          = CreditCards.query.filter_by(user_id=current_user.id).all()
 
     # user.loans - it already does the join statement cause of relationship
-    # combined = user.loans + user.other + user.cc
-    # sorted = sorted(combined, lambda x: x.current_owed)
-    # print(sorted)
+    combined    = current_user.loans + current_user.other_debts + current_user.credit_cards
+    
+
+    owed_sort   = sorted(combined, key=lambda x: x.current_owed)
+    int_sort    = sorted(combined, key=lambda x: x.interest_rate)
+    
+    print(owed_sort)
+    print(int_sort)
+    print(hasattr(combined, 'interest_rate'))
+    print(hasattr(combined[0:][0:], 'interest_rate'))
+    # print(combined[:].interest_rate)
 
     #! Used for loops due to time contraints. Will modify later
     total       = 0
@@ -118,9 +126,6 @@ def overview():
         total += z.current_owed
         total_min += (z.current_owed * z.min_calc)
     
-
-    # all_d   = Loans.query.join(OtherDebts).join(CreditCards).filter_by(user_id=current_user.id).all()
-    # print(all_d)
 
     return render_template('overview.html', budget=budget, loans=loans, other=other, cc=cc, update_form=update_form, del_form=del_form, total=total, total_min=total_min)
 
