@@ -2,6 +2,7 @@
 
 # from crypt import methods
 from email import message
+from operator import contains
 from os import environ
 from flask import Flask, render_template, render_template, url_for, redirect, request, flash, abort
 
@@ -100,34 +101,24 @@ def overview():
     other       = OtherDebts.query.filter_by(user_id=current_user.id).all()
     cc          = CreditCards.query.filter_by(user_id=current_user.id).all()
 
-    # user.loans - it already does the join statement cause of relationship
     combined    = current_user.loans + current_user.other_debts + current_user.credit_cards
     
 
-    owed_sort   = sorted(combined, key=lambda x: x.current_owed)
-    int_sort    = sorted(combined, key=lambda x: x.interest_rate)
-    
-    print(owed_sort)
-    print(int_sort)
-    print(hasattr(combined, 'interest_rate'))
-    print(hasattr(combined[0:][0:], 'interest_rate'))
-    # print(combined[:].interest_rate)
+    owed_sort   = sorted(combined, key=lambda x: x.current_owed, reverse=True)
+    int_sort    = sorted(combined, key=lambda x: x.interest_rate, reverse=True)
 
-    #! Used for loops due to time contraints. Will modify later
     total       = 0
     total_min   = 0
-    for x in loans:
-        total += x.current_owed
-        total_min += x.min_payment
-    for y in other:
-        total += y.current_owed
-        total_min += y.min_payment
-    for z in cc:
-        total += z.current_owed
-        total_min += (z.current_owed * z.min_calc)
+    for i in combined:
+        total += i.current_owed
+        if hasattr(i, 'min_payment'):
+            total_min += i.min_payment
+        else:
+            total_min += (i.current_owed * i.min_calc)
+
     
 
-    return render_template('overview.html', budget=budget, loans=loans, other=other, cc=cc, update_form=update_form, del_form=del_form, total=total, total_min=total_min)
+    return render_template('overview.html', budget=budget, loans=loans, other=other, cc=cc, update_form=update_form, del_form=del_form, total=total, total_min=total_min, combined=combined)
 
 @app.route('/delete', methods=['GET', 'POST'])
 @login_required

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="jumbotron d-flex justify-content-center">
+        <h3>Monthly budget overview</h3>
+    </div>
+    
+    -----------------------------
+
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <h4>▀ ▀ ▀ ▀ ▀</h4>
+        </div>
+        <table class="table table-striped table-hover table-dark">
+            <thead>
+                <th scope="col">Name</th>
+                <th scope="col">Owed</th>
+                <th scope="col">Interest Rate</th>
+                <th scope="col">Minimum Payment</th>
+            </thead>
+            <tbody>
+                {%for entry in combined|sort(attribute='current_owed') %}
+                <tr>
+                    <th>{{entry.loan_name or entry.debt_name or entry.card_name}}</th>
+                    <td>${{entry.current_owed}}</td>
+                    <td>{{entry.interest_rate}}%</td>
+                    <td>{{entry.min_payment or entry.min_calc * entry.current_owed}}</td>
+                </tr>
+                {%endfor%}
+            </tbody>
+        </table>
+    </div>
+
+    -----------------------------
+
+    <div class="container">
+        <div class="row d-flex justify-content-center">
+            <h4>▀ ▀ ▀ ▀ ▀</h4>
+        </div>
+        <div class="row d-flex justify-content-center">
+        </div>
+        <div class="row d-flex justify-content-center">
+            <h3>Overview</h3>
+        </div>
+        <div class="row d-flex justify-content-center">
+            <h4>▀ ▀ ▀ ▀ ▀</h4>
+        </div>
+        <table class="table table-striped table-hover table-dark">
+            <thead>
+                <th scope="col">Total Owed</th>
+                <th scope="col">Total Minimum Payments</th>
+                <th scope="col">Montly Budget</th>
+            </thead>
+            <tbody>
+                <td>{{total}}</td>
+                <td>{{total_min}}</td>
+                <td>{{budget.spending_amount}}</td>
+            </tbody>
+        </table>
+        <div class="row d-flex justify-content-center">
+            <h4>▀ ▀ ▀ ▀ ▀</h4>
+        </div>
+    </div>
+{% endblock %}
