@@ -103,9 +103,8 @@ def overview():
 
     combined    = current_user.loans + current_user.other_debts + current_user.credit_cards
     
-
-    owed_sort   = sorted(combined, key=lambda x: x.current_owed, reverse=True)
-    int_sort    = sorted(combined, key=lambda x: x.interest_rate, reverse=True)
+    # owed_sort   = sorted(combined, key=lambda x: x.current_owed, reverse=True)
+    # int_sort    = sorted(combined, key=lambda x: x.interest_rate, reverse=True)
 
     total       = 0
     total_min   = 0
@@ -115,10 +114,25 @@ def overview():
             total_min += i.min_payment
         else:
             total_min += (i.current_owed * i.min_calc)
-
     
 
     return render_template('overview.html', budget=budget, loans=loans, other=other, cc=cc, update_form=update_form, del_form=del_form, total=total, total_min=total_min, combined=combined)
+
+@app.route('/avalanche', methods=['GET','POST'])
+@login_required
+def avalanche():
+    combined    = current_user.loans + current_user.other_debts + current_user.credit_cards
+    budget      = MonthlyBudget.query.filter_by(user_id=current_user.id).first()
+
+    return render_template('avalanche.html', combined=combined, budget=budget)
+
+@app.route('/snowball', methods=['GET','POST'])
+@login_required
+def snowball():
+    combined    = current_user.loans + current_user.other_debts + current_user.credit_cards
+    budget      = MonthlyBudget.query.filter_by(user_id=current_user.id).first()
+
+    return render_template('snowball.html', combined=combined, budget=budget)
 
 @app.route('/delete', methods=['GET', 'POST'])
 @login_required
