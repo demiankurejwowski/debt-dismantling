@@ -103,6 +103,7 @@ def overview():
 
     combined    = current_user.loans + current_user.other_debts + current_user.credit_cards
     
+    #!.
     # owed_sort   = sorted(combined, key=lambda x: x.current_owed, reverse=True)
     # int_sort    = sorted(combined, key=lambda x: x.interest_rate, reverse=True)
 
