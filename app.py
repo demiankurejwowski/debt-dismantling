@@ -90,14 +90,17 @@ def login():
 
 @app.route('/register', methods=['GET','POST'])
 def register():
+    #Use form from form.py named RegistrationForm and assign it
     form = RegistrationForm()
 
     if form.validate_on_submit():
+        #upon submit get the information from the fields and assign them
         user = Users(email      =form.email.data,
                     username    =form.username.data,
                     password    =form.password.data,
                     state       =form.state.data)
 
+        #Now we need to take that information and add it, then commit it to the DB
         db.session.add(user)
         db.session.commit()
         flash("Thank you for registering.")
@@ -108,26 +111,35 @@ def register():
 @app.route('/overview', methods=['GET','POST'])
 @login_required
 def overview():
+    #Updating and deleting will be done from the overview - imported forms from forms.py
     update_form = UpdateForm()
     del_form    = DelForm()
+    #Pulled each table separately from each DB table 
     budget      = MonthlyBudget.query.filter_by(user_id=current_user.id).first()
     loans       = Loans.query.filter_by(user_id=current_user.id).all()
     other       = OtherDebts.query.filter_by(user_id=current_user.id).all()
     cc          = CreditCards.query.filter_by(user_id=current_user.id).all()
 
+    #Using a different method due to the lazy=True method within the class User object in reference to each table which is easier and more effecient. 
     combined    = current_user.loans + current_user.other_debts + current_user.credit_cards
     
-    #!.
+    #? Simply left here as reference and showing the lamdda for sorting tables
     # owed_sort   = sorted(combined, key=lambda x: x.current_owed, reverse=True)
     # int_sort    = sorted(combined, key=lambda x: x.interest_rate, reverse=True)
 
+    #At this point I need two totals from all tables. Total and Total minimum amounts
     total       = 0
     total_min   = 0
+    #For item in combined (all tables associated with user) do this
     for i in combined:
+        #take the total and add current_owed to it
         total += i.current_owed
+        #not all tables have a min_payment so check for those first and add the minimum payment to the total min to show what the user owes each month
         if hasattr(i, 'min_payment'):
             total_min += i.min_payment
+        #if it doesn't have min payment then do this
         else:
+            #calculate the minimum payment as current owed times the minimum calculation. This will either be an average default or chosen by the user
             total_min += (i.current_owed * i.min_calc)
     
 
