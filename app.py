@@ -3,46 +3,52 @@
 # from crypt import methods
 from email import message
 from operator import contains
+#environ stands for environment within os (operating system)
 from os import environ
+#Flask is the main handler of requests and information
 from flask import Flask, render_template, render_template, url_for, redirect, request, flash, abort
-
 from flask_migrate import Migrate
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from flask_bcrypt import Bcrypt
 
+#Importing all of the model class objects from model.py
 from model import CreditCards, Loans, MonthlyBudget, OtherDebts, Users, db, database_connection
+#Forms created for handling information submitted as a form from another page
 from forms import LoanForm, OtherForm, CCForm, DelForm, UpdateForm, LoginForm, RegistrationForm, BudgetForm
 
 
-
+#assigning an envoked Flask to the name app with the template folder path
 app = Flask(__name__, template_folder='pages')
 
+#Secret key location for Flask
 app.secret_key = environ["SECRET_KEY_FTW"]
 
 migrate = Migrate(app,db)
 
-
+#Envoking the loginmanager for use within app
 login_manager = LoginManager()
-
 login_manager.init_app(app)
-
 login_manager.login_view = 'login'
 
 
 
-
+##Below are the routes and directions for Flask to
+#load user - if user is in Users db load them in as the user
 @login_manager.user_loader
 def load_user(user_id):
     return Users.query.get(user_id)
 
+#Home page route to the home.html
 @app.route('/')
 def home():
     return render_template('home.html')
 
+#Welcome page requires login and then will display welcome.html template
 @app.route('/welcome')
 @login_required
 def welcome_user():
     return render_template('welcome.html')
+
 
 @app.route('/logout')
 @login_required
