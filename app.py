@@ -49,7 +49,7 @@ def home():
 def welcome_user():
     return render_template('welcome.html')
 
-
+#Logout route for when a user is logged in
 @app.route('/logout')
 @login_required
 def logout():
@@ -57,24 +57,32 @@ def logout():
     flash("You've been logged out")
     return redirect(url_for('home'))
 
+#login route for logging in - request methods get and post needed
 @app.route('/login', methods=['GET','POST'])
 def login():
-
+    #form assignment of the loginform from forms.py
     form = LoginForm()
+    #Validate information on pressing the submit button
     if form.validate_on_submit():
+        #Query the Users DB to find the user with the username from the submitted form and use the first response as there should only be one
         user = Users.query.filter_by(username=form.username.data).first()
 
+        #If the user exists (is not none), check the password to confirm it matches
         if user.check_password(form.password.data) and user is not None:
+            #If all checks out, make user the logged in user for Flask
             login_user(user)
             flash('Logged in successfully.')
 
+            #A MultiDict with parsed content of the query string
             next = request.args.get('next')
 
+            #Verify that next isn't None and that the first part of next isn't the first routed page and if those conditions meet then assign next to the welcome.html
             if next == None or not next[0]=='/':
                 next = url_for('welcome_user')
 
             return redirect(next)
 
+        #If unable to validate user display message and stay on page
         else:
             flash('Incorrect log-in')
 
