@@ -142,13 +142,16 @@ def overview():
             #calculate the minimum payment as current owed times the minimum calculation. This will either be an average default or chosen by the user
             total_min += (i.current_owed * i.min_calc)
     
-
+    #assigned forms within the return
     return render_template('overview.html', budget=budget, loans=loans, other=other, cc=cc, update_form=update_form, del_form=del_form, total=total, total_min=total_min, combined=combined)
+
 
 @app.route('/avalanche', methods=['GET','POST'])
 @login_required
 def avalanche():
+    #Combine tables from the lazy=True feature of Flask
     combined    = current_user.loans + current_user.other_debts + current_user.credit_cards
+    #Pull budget from the Monthly budget table
     budget      = MonthlyBudget.query.filter_by(user_id=current_user.id).first()
 
     return render_template('avalanche.html', combined=combined, budget=budget)
@@ -156,15 +159,20 @@ def avalanche():
 @app.route('/snowball', methods=['GET','POST'])
 @login_required
 def snowball():
+    #Combine tables from the lazy=True feature of Flask
     combined    = current_user.loans + current_user.other_debts + current_user.credit_cards
+    #Pull budget from the Monthly budget table
     budget      = MonthlyBudget.query.filter_by(user_id=current_user.id).first()
 
     return render_template('snowball.html', combined=combined, budget=budget)
 
 @app.route('/delete', methods=['GET', 'POST'])
 @login_required
+#Had to create a new page/route to handle delete requests
 def delete():
+    #to delete the request must be a post request
     if request.method == 'POST':
+        #Check to make sure what information is within the delete request so that the request it handled correctly and the correct information deletes from the correct table. 
         if 'loan_delete' in request.form:
             l_id    = request.form['debt_id']
             loan    = Loans.query.filter_by(debt_id=l_id).first()
@@ -198,7 +206,9 @@ def delete():
 @app.route('/update', methods=['GET', 'POST'])
 @login_required
 def update():
+    #request method must be a post to edit the entries in the table
     if request.method == 'POST':
+        #Check to make sure what information is within the edit request so that the request it handled correctly and the correct information edits from the correct table. 
         if 'loan_edit' in request.form:
             l_id                = request.form['debt_id']
             loan                = Loans.query.filter_by(debt_id=l_id).first()
@@ -233,6 +243,7 @@ def update():
 
     return redirect(url_for('overview'))
 
+#add route to insert new information to the correct table
 @app.route('/addnew', methods=['GET','POST'])
 @login_required
 def addnew():
