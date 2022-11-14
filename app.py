@@ -247,11 +247,14 @@ def update():
 @app.route('/addnew', methods=['GET','POST'])
 @login_required
 def addnew():
+    #assign forms enacted to these variables
     loan_form   = LoanForm()
     other_form  = OtherForm()
     cc_form     = CCForm()
     budget_form = BudgetForm()
+    #make current user easier to grab
     user        = current_user
+    #grab budget again in case it's needed
     get_budget  = MonthlyBudget.query.filter_by(user_id=current_user.id).first()
 
     if budget_form.validate_on_submit():
