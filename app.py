@@ -276,6 +276,7 @@ def addnew():
         return redirect(url_for('debtadded'))
 
     if loan_form.validate_on_submit():
+        #loan entry needs the following information and each piece is assigned from a part of the loan form as specified here
         loan = Loans(user_id        = user.id,
                     loan_name       = loan_form.loan_name.data,
                     current_owed    = loan_form.current_owed_l.data,
@@ -291,6 +292,7 @@ def addnew():
 
 
     if other_form.validate_on_submit():
+        #Same as loans
         other = OtherDebts( user_id         = user.id,
                             debt_name       = other_form.debt_name.data,
                             current_owed    = other_form.current_owed_o.data,
@@ -306,6 +308,7 @@ def addnew():
 
 
     if cc_form.validate_on_submit():
+        #Same as loans
         cc = CreditCards(user_id        = user.id,
                         card_name       = cc_form.card_name.data,
                         card_max        = cc_form.card_max_cc.data,
@@ -322,11 +325,13 @@ def addnew():
 
     return render_template('addnew.html', loan_form=loan_form, other_form=other_form, cc_form=cc_form, budget_form=budget_form)
 
+#Once debt is added route to new page to see where the user wants to go
 @app.route('/debtadded')
 @login_required
 def debtadded():
     return render_template('debtadded.html')
 
+#If app.py is ran as main then connect to database and run app on port 8000
 if __name__ == '__main__':
     database_connection(app)
     app.run(debug=True, port=8000)
