@@ -18,10 +18,11 @@ class Users(db.Model,UserMixin):
     id              = db.Column(db.Integer, primary_key=True)
     #username column as a string limited to 64 characters, commonly referred to as varchar within SQL. Username can't be empty and it needs to be unique
     username        = db.Column(db.String(64), unique=True, nullable=False)
-    
+    #index added to make use of a keyword access use from SQLAlchemy
     email           = db.Column(db.String(64), unique=True, index=True, nullable=False)
     password_hash   = db.Column(db.String(255), nullable=False)
     state           = db.Column(db.String(2), nullable=True)
+    #Create relationships to other tables/mapped classes for easy  access of parent-child table relationships
     loans           = db.relationship('Loans', backref='user', lazy=True)
     other_debts     = db.relationship('OtherDebts', backref='user', lazy=True)
     credit_cards    = db.relationship('CreditCards', backref='user', lazy=True)
@@ -46,6 +47,7 @@ class Loans(db.Model):
     __tablename__ = 'loans'
 
     debt_id         = db.Column(db.Integer, primary_key=True)
+    
     user_id         = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     loan_name       = db.Column(db.String(64), nullable=False, unique=True)
     current_owed    = db.Column(db.Float, nullable=False)
