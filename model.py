@@ -8,13 +8,17 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-
+#Create class that will be used to make a table using SQLAlchemy as 'db' using UserMixin import from flask
 class Users(db.Model,UserMixin):
 
+    #magic method tablename and name the table
     __tablename__ = 'users'
 
+    #id is a special varible within Flask used along with the usermixin for user sign in later - this column should be the primary key (it auto increments and there can only be one with this key)
     id              = db.Column(db.Integer, primary_key=True)
+    #username column as a string limited to 64 characters, commonly referred to as varchar within SQL. Username can't be empty and it needs to be unique
     username        = db.Column(db.String(64), unique=True, nullable=False)
+    
     email           = db.Column(db.String(64), unique=True, index=True, nullable=False)
     password_hash   = db.Column(db.String(255), nullable=False)
     state           = db.Column(db.String(2), nullable=True)
