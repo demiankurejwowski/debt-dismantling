@@ -47,7 +47,7 @@ class Loans(db.Model):
     __tablename__ = 'loans'
 
     debt_id         = db.Column(db.Integer, primary_key=True)
-    
+    #adding a foreignkey to this column to grab and associate with id from users table
     user_id         = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     loan_name       = db.Column(db.String(64), nullable=False, unique=True)
     current_owed    = db.Column(db.Float, nullable=False)
@@ -57,6 +57,7 @@ class Loans(db.Model):
     payoff_date     = db.Column(db.Date, nullable=False)
     active          = db.Column(db.Boolean, nullable=False)
 
+    #auto assign as active which can be turned off later. This allows for keep track of deleted or paid off debts.
     def __init__(self, user_id, loan_name="", current_owed = "", interest_rate="", min_payment="", due_date="", payoff_date="", active=True):
         self.user_id        = user_id
         self.loan_name      = loan_name
